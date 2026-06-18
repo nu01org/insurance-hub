@@ -1,45 +1,69 @@
 package ih.vdn;
 
-import jakarta.inject.Inject;
-
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 /**
- * The main view contains a button and a click listener.
+ * Landing page for the vehicle insurance app: a simple hero section.
  */
+@PageTitle("InsuranceHub | Vehicle Insurance")
 @Route("")
 public class MainView extends VerticalLayout {
 
-    @Inject
-    GreetService greetService;
-
     public MainView() {
-        // Use TextField for standard text input
-        TextField textField = new TextField("Your name");
-        textField.addThemeName("bordered");
+        addClassName("hero");
+        setSizeFull();
+        setPadding(false);
+        setSpacing(false);
 
-        // Button click listeners can be defined as lambda expressions
-        Button button = new Button("Say hello", e -> {
-            add(new Paragraph(greetService.greet(textField.getValue())));
-        });
+        add(new HorizontalLayout(buildText(), buildImage()) {{
+            addClassName("hero__inner");
+            setWidthFull();
+        }});
+    }
 
-        // Theme variants give you predefined extra styles for components.
-        // Example: Primary button is more prominent look.
-        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    private VerticalLayout buildText() {
+        var eyebrow = new Span("VEHICLE INSURANCE");
+        eyebrow.addClassName("hero__eyebrow");
 
-        // You can specify keyboard shortcuts for buttons.
-        // Example: Pressing enter in this view clicks the Button.
-        button.addClickShortcut(Key.ENTER);
+        var title = new H1("Drive protected, every mile of the way.");
+        title.addClassName("hero__title");
 
-        // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
-        addClassName("centered-content");
+        var subtitle = new Paragraph(
+                "Comprehensive coverage built for your car, your budget, and your peace of mind. "
+                        + "Get a personalized quote in minutes.");
+        subtitle.addClassName("hero__subtitle");
 
-        add(textField, button);
+        var quote = new Button("Get a quote");
+        quote.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
+        quote.addClassName("hero__cta");
+        quote.addClickListener(e -> quote.getUI().ifPresent(ui -> ui.navigate(QuoteView.class)));
+
+        var learn = new Button("Explore coverage");
+        learn.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY);
+        learn.addClickListener(e -> learn.getUI().ifPresent(ui -> ui.navigate(AboutView.class)));
+
+        var actions = new HorizontalLayout(quote, learn);
+        actions.addClassName("hero__actions");
+
+        var text = new VerticalLayout(eyebrow, title, subtitle, actions);
+        text.addClassName("hero__text");
+        text.setPadding(false);
+        text.setSpacing(false);
+        return text;
+    }
+
+    private Image buildImage() {
+        var hero = new Image("/images/hero-vehicles.png", "Car protected by an insurance shield");
+        hero.addClassName("hero__image");
+        return hero;
     }
 }

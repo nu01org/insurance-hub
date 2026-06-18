@@ -1,17 +1,128 @@
-/*
-   CSS styling examples for the Vaadin app.
-   Visit https://vaadin.com/docs/latest/styling/application-theme and
-   https://vaadin.com/docs/latest/styling/lumo for more information.
-*/
+/* InsuranceHub — vehicle insurance landing page styles. */
 
-/* Example: CSS class name to center align the content . */
-.centered-content {
-    margin: 0 auto;
-    max-width: 250px;
+.hero {
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(1200px 600px at 85% -10%, #dbeafe 0%, transparent 60%),
+        linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
 }
 
-/* Example: the style is applied only to the textfields which have the `bordered` class name. */
-vaadin-text-field.bordered::part(input-field) {
-    box-shadow: inset 0 0 0 1px var(--lumo-contrast-30pct);
-    background-color: var(--lumo-base-color);
+.hero--form {
+    justify-content: flex-start;
+    padding-top: 4rem;
+}
+
+.hero__inner {
+    max-width: 1100px;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem clamp(1.5rem, 5vw, 4rem);
+    flex-wrap: wrap;
+}
+
+.hero__text {
+    flex: 1 1 360px;
+    max-width: 560px;
+}
+
+.hero__eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--lumo-primary-color);
+}
+
+.hero__title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.08;
+    font-weight: 800;
+    margin: 0.6rem 0 0;
+    color: #0f172a;
+}
+
+.hero__subtitle {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #475569;
+    margin: 1.1rem 0 0;
+}
+
+.hero__section-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 2rem 0 0.75rem;
+}
+
+.hero__actions {
+    margin-top: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hero__cta {
+    box-shadow: 0 10px 25px rgba(29, 78, 216, 0.35);
+}
+
+.quote-result__price {
+    margin-top: 1rem;
+    gap: 0.25rem;
+}
+
+.quote-result__amount {
+    font-size: clamp(2.6rem, 6vw, 3.6rem);
+    font-weight: 800;
+    color: var(--lumo-primary-color);
+    line-height: 1;
+}
+
+.quote-result__period {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.quote-result__factors {
+    margin-top: 1rem;
+    gap: 0;
+}
+
+.quote-result__factor {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.quote-result__factor-name {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.quote-result__factor-detail {
+    display: block;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 0.15rem;
+}
+
+.quote-result__factor-value {
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+}
+
+.quote-result__disclaimer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.hero__image {
+    flex: 1 1 360px;
+    max-width: 520px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 24px 48px rgba(30, 58, 138, 0.18));
 }

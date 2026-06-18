@@ -1,0 +1,33 @@
+version: "0.5"
+
+processes:
+  # PostgreSQL database, run as a throwaway container for local dev.
+  database:
+    command: >-
+      docker run --rm --name insurance-hub-db
+      -e POSTGRES_USER=quarkus
+      -e POSTGRES_PASSWORD=quarkus
+      -e POSTGRES_DB=insurancehub
+      -p 5432:5432
+      postgres:16-alpine
+    shutdown:
+      command: docker stop insurance-hub-db
+      timeout_seconds: 30
+    readiness_probe:
+      exec:
+        command: docker exec insurance-hub-db pg_isready -U quarkus -d insurancehub
+      initial_delay_seconds: 3
+      period_seconds: 3
+      timeout_seconds: 5
+      failure_threshold: 20
+    availability:
+      restart: on_failure
+      backoff_seconds: 5
+
+  # ih-vdn Quarkus app in dev mode; starts once the database is accepting connections.
+  app:
+    command: ./ih-vdn/scripts/dev-start.sh
+    working_dir: .
+    depends_on:
+      database:
+        condition: process_healthy
