@@ -13,7 +13,11 @@
   "features": {
     // process-compose launches the database + decision-control via `docker run`,
     // so the container needs its own Docker daemon.
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    // moby:false -> install upstream Docker CE; the devbox base is Debian trixie,
+    // which has no moby-cli packages (the feature's default moby:true fails there).
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": false
+    }
   },
 
   "forwardPorts": [8080, 8081, 5432],

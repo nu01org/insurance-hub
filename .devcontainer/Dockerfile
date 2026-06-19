@@ -1,5 +1,6 @@
 # Jetify's image ships devbox + nix preconfigured for the non-root `devbox` user.
-FROM jetpackio/devbox:latest
+# Pinned to match devbox.json (0.17.3) for reproducible builds.
+FROM jetpackio/devbox:0.17.3
 
 # Tools used by scripts/health.sh (curl for the ih-vdn probe, jq for the docker
 # registry-auth check; the script falls back to grep if jq is missing).
