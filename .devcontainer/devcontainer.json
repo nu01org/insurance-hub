@@ -63,6 +63,7 @@
         "redhat.java",
         "redhat.vscode-quarkus",
         "kie-group.vscode-extension-kogito-bundle",
+        "kie-group.extended-services-vscode-extension",
         "jetpack-io.devbox"
       ],
       // The java feature installs via SDKMAN to this stable path and sets
