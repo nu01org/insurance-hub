@@ -108,12 +108,12 @@ public class QuoteResultView extends VerticalLayout implements HasUrlParameter<L
         startButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
         startButton.addClickListener(e -> startButton.getUI().ifPresent(ui -> ui.navigate(ThankYouView.class)));
 
-        var edit = new RouterLink("", QuoteView.class);
-        var editButton = new Button("Edit my details");
-        editButton.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY);
-        edit.add(editButton);
+        var newQuote = new RouterLink("", QuoteView.class);
+        var newQuoteButton = new Button("New quote");
+        newQuoteButton.addThemeVariants(ButtonVariant.LUMO_LARGE, ButtonVariant.LUMO_TERTIARY);
+        newQuote.add(newQuoteButton);
 
-        var actions = new HorizontalLayout(startButton, edit);
+        var actions = new HorizontalLayout(startButton, newQuote);
         actions.addClassName("hero__actions");
 
         var text = new VerticalLayout(eyebrow, title, price, annual,

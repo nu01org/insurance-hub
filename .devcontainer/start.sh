@@ -56,12 +56,32 @@ for _ in $(seq 1 30); do
 done
 
 # Log in to the Aletyx private registry so decision-control can be pulled.
-# Credentials come from Codespaces secrets (ALETYX_* env vars), passed through
-# in devcontainer.json; if any are unset we skip quietly — the other services
-# still come up.
+#
+# In Codespaces the ALETYX_* credentials arrive as Codespaces secrets, which the
+# platform injects straight into our environment — nothing in devcontainer.json
+# needs to (or should) forward them. For local Dev Containers there are no
+# Codespaces secrets, so we source .env, where a developer can keep the same
+# vars (it is gitignored). .env never overrides a value already in the
+# environment, so the Codespaces-injected secret always wins.
+if [ -f .env ]; then
+  while IFS= read -r line; do
+    case "$line" in ''|'#'*) continue ;; esac   # skip blanks/comments
+    key=${line%%=*}
+    [ "$key" = "$line" ] && continue            # skip lines without '='
+    [ -n "${!key:-}" ] && continue              # keep value already in env
+    export "$line"
+  done < .env
+fi
+
 registry_login() {
   if [ -z "${ALETYX_REGISTRY:-}" ] || [ -z "${ALETYX_USERNAME:-}" ] || [ -z "${ALETYX_PASSWORD:-}" ]; then
     echo "ALETYX_* registry secrets not set; skipping docker login."
+    if [ -n "${CODESPACE_NAME:-}" ]; then
+      echo "  In Codespaces these come from Codespaces secrets. Check that"
+      echo "  ALETYX_REGISTRY / ALETYX_USERNAME / ALETYX_PASSWORD exist AND are"
+      echo "  granted to this repository (Settings > Codespaces secrets show the"
+      echo "  repo in 'Repository access'), then rebuild the Codespace."
+    fi
     return 0
   fi
   echo "Logging in to ${ALETYX_REGISTRY}..."

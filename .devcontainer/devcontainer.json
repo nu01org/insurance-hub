@@ -36,20 +36,15 @@
     "5432": { "label": "postgres", "onAutoForward": "silent" }
   },
 
-  // Optional: provide the private Decision Control image via a Codespaces
-  // secret named DECISION_CONTROL_IMAGE. If unset, .env's value (if any) is
-  // used; otherwise the decision-control process simply stays red.
-  //
-  // ALETYX_* are Codespaces secrets holding the private-registry credentials;
-  // start.sh uses them to `docker login` so decision-control can be pulled.
-  // (Codespaces injects these as env vars; this passthrough also surfaces them
-  // to local Dev Containers when exported on the host.)
-  "containerEnv": {
-    "DECISION_CONTROL_IMAGE": "${localEnv:DECISION_CONTROL_IMAGE}",
-    "ALETYX_REGISTRY": "${localEnv:ALETYX_REGISTRY}",
-    "ALETYX_USERNAME": "${localEnv:ALETYX_USERNAME}",
-    "ALETYX_PASSWORD": "${localEnv:ALETYX_PASSWORD}"
-  },
+  // NOTE: DECISION_CONTROL_IMAGE and the ALETYX_* private-registry credentials
+  // are intentionally NOT declared here. In Codespaces those values arrive as
+  // Codespaces (user/repo) secrets, which the platform injects into the
+  // container's environment on its own — start.sh and process-compose see them
+  // directly. Re-declaring them with ${localEnv:...} is harmful: on the build
+  // host that variable is empty, so the declaration OVERWRITES the injected
+  // secret with "" and `docker login` gets skipped. For local Dev Containers
+  // (which have no Codespaces secrets) put the same vars in .env — start.sh
+  // sources it before logging in.
 
   // Pre-link the devbox packages into this workspace and seed .env once at
   // create time (the image already warmed the nix store, so this is fast).
@@ -66,6 +61,7 @@
         "vscjava.vscode-java-pack",
         "redhat.java",
         "redhat.vscode-quarkus",
+        "kie-group.vscode-extension-kogito-bundle",
         "jetpack-io.devbox"
       ],
       // The java feature installs via SDKMAN to this stable path and sets
