@@ -26,11 +26,12 @@ governed independently of the application:
 
 - **Transparent** — every rule is an explicit row in a decision table, not weights buried in
   code or a black-box model. Anyone can read *why* a given quote came out the way it did.
-- **Governable** — models are uploaded, versioned, and enabled through Decision Control's
+- **Auditable** — models are uploaded, versioned, and enabled through Decision Control's
   management API, so changes are deliberate and auditable rather than code edits.
 - **Separable** — business analysts own the rules; engineers own the application. The app
   calls the model over a REST runtime endpoint and never hard-codes its logic or even its
   generated model id (see [QuoteService.java](ih-vdn/src/main/java/ih/service/QuoteService.java)).
+- **Eficient** - Execution is fast and local, without requiring spending tokens or external APIs.
 
 This is the pattern for putting automated decisioning into production *accountably*: the
 decision is an asset you can inspect, test, version, and explain.
