@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 # Started by the dev container on every boot (postStartCommand).
-# Seeds .env if needed, waits for Docker, then launches all process-compose
-# services in the background via devbox (so the JDK/Quarkus toolchain is on PATH).
+# Waits for Docker, then launches all process-compose services in the background
+# via devbox (so the JDK/Quarkus toolchain is on PATH).
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-# First boot: seed a working .env from the committed example.
-if [ ! -f .env ] && [ -f .env.example ]; then
-  cp .env.example .env
-  echo "Seeded .env from .env.example"
-fi
+# Enter the devbox environment once so its init_hook (scripts/devbox-init-hook.sh)
+# runs: it seeds .env from the example and, in a Codespace, sets APP_HOST. This
+# must happen before we source .env below for the registry login.
+devbox run -- true
 
 # Install the GitHub CLI to ~/.local/bin if it isn't already available.
 # Static binary install needs no root, unlike the apt repo method.

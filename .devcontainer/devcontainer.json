@@ -47,14 +47,16 @@
   // (which have no Codespaces secrets) put the same vars in .env — start.sh
   // sources it before logging in.
 
-  // Pre-link the devbox packages into this workspace and seed .env once at
-  // create time (the image already warmed the nix store, so this is fast).
-  "onCreateCommand": "devbox install; [ -f .env ] || cp .env.example .env",
+  // Pre-link the devbox packages into this workspace (the image already warmed
+  // the nix store, so this is fast). The devbox init_hook
+  // (scripts/devbox-init-hook.sh) seeds .env the first time the devbox
+  // environment is entered.
+  "onCreateCommand": "devbox install",
 
   // Start all processes in the background on every boot. decision-control may
   // stay red without a private image / registry login — that's fine, the other
   // services come up independently.
-  "postStartCommand": "bash .devcontainer/start.sh",
+  "postStartCommand": "bash .devcontainer/postStartCommand.sh",
 
   "customizations": {
     "vscode": {
